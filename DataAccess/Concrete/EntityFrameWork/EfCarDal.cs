@@ -1,62 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
+using Core.DataAccess.EntityFramework;
 using DataAccess.Abstract;
 using Entites.Concrete;
-using Microsoft.EntityFrameworkCore;
+using Entites.DTOs;
 
 namespace DataAccess.Concrete.EntityFrameWork
 {
-    public class EfCarDal : ICarDal
+    public class EfCarDal : EfEntityRepositoryBase<Car, T_Context>, ICarDal
     {
-        public void Add(Car entity)
+        public List<CarDetailDTo> GetCarDetails()
         {
-            using (Car context=new Car()) {
+            using (T_Context context = new T_Context()) {
 
-                var addEntity = context.Entry(entity);
-                addEntity.State = EntityState.Added;
-                context.SaveChanges();
+                var result = from p in context.Cars join c in context.Colors on p.ColorId equals c.ColorId
+                             join b in context.Brands on p.BrandId equals b.BrandId
+                             select new CarDetailDTo {Id = p.ProductId, CarName= b.BrandName, ColorName=c.ColorName};
 
-
-            }
-        }
-
-        public void Delete(Car entity)
-        {
-            using (Car context = new Car())
-            {
-
-                var deleteEntity = context.Entry(entity);
-                deleteEntity.State = EntityState.Deleted;
-                context.SaveChanges();
-
-
-            }
-        }
-
-        public List<Car> GetAll(Expression<Func<Car, bool>> filter = null)
-        {
-            using (Car context = new Car())
-            {
-
-                return filter == null ? context.Set<Car>().ToList() : context.Set<Car>().Where(filter).ToList();
-            }
-        }
-
-        public List<Car> GetById(int Id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update(Car entity)
-        {
-            using (Car context = new Car())
-            {
-
-                var updateEntity = context.Entry(entity);
-                updateEntity.State = EntityState.Modified;
-                context.SaveChanges();
+                return result.ToList();
             }
         }
     }

@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using Entites.Abstract;
-using Entites.Concrete;
+using System.Linq.Expressions;
+using Core.Entities;
 
-namespace DataAccess.Abstract
+namespace Core.DateAccess
 {
     public interface IEntityRepository<T> where T : class, IEntity, new()
     {
         // GetById, GetAll, Add, Update, Delete
 
-        List<T> GetById(int Id);
-        List<T> GetAll();
+       
+        List<T> GetAll(Expression<Func<T, bool>> filter = null);
         void Add(T entity);
         void Update(T entity);
         void Delete(T entity);

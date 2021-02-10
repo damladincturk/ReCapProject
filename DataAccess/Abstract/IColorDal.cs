@@ -1,4 +1,5 @@
 ﻿using System;
+using Core.DateAccess;
 using Entites.Concrete;
 
 namespace DataAccess.Abstract

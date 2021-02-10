@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using DataAccess.Abstract;
 using Entites.Concrete;
+using Entites.DTOs;
 
 namespace DataAccess.Concrete.InMemory
 {
@@ -13,7 +15,6 @@ namespace DataAccess.Concrete.InMemory
         public InMemoryCarDal()
         {
             _cars = new List<Car> {
-
             new Car{ Id=1, BrandId=1, ColorId=1, ModelYear=1997, DailyPrice=150, Description="kötü araba "},
             new Car{ Id=2, BrandId=2, ColorId=1, ModelYear=2020, DailyPrice=300, Description="mükemmel araba "},
             new Car{ Id=3, BrandId=2, ColorId=2, ModelYear=2017, DailyPrice=240, Description="güzel araba "},
@@ -33,15 +34,16 @@ namespace DataAccess.Concrete.InMemory
            _cars.Remove(carToDelete);
         }
 
-        public List<Car> GetAll()
+        
+
+        public List<Car> GetAll(Expression<Func<Car, bool>> filter = null)
         {
             return _cars;
-
         }
 
-        public List<Car> GetById(int Id)
+        public List<CarDetailDTo> GetCarDetails()
         {
-            return _cars.Where(p=>p.Id==Id).ToList();
+            throw new NotImplementedException();
         }
 
         public void Update(Car car)
